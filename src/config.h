@@ -5,7 +5,7 @@
     #include <Arduino.h>
 
 
-    // DefiniÃ§Ãµes para debug via porta serial (Serial Monitor)
+    // DefiniÃÂ§ÃÂµes para debug via porta serial (Serial Monitor)
     #define debug_debug
 
     #define PULSO_LITRO 5880 //1L = 5880 square waves
@@ -19,14 +19,14 @@
     #define COMANDO_ML "ML:" // Libera quantidade de ML
     #define COMANDO_PL "PL:" // Configura pulso por litro no sensor de fluxo
     #define COMANDO_ID "ID:" // Tag rfid lida
-    #define COMANDO_LB "LB:" // Aciona liberaÃ§Ã£o continua
-    #define COMANDO_VZ "VZ:" // VazÃ£o
+    #define COMANDO_LB "LB:" // Aciona liberaÃÂ§ÃÂ£o continua
+    #define COMANDO_VZ "VZ:" // VazÃÂ£o
     #define COMANDO_QP "QP:" // Quantidade de pulsos
     #define COMANDO_RI "RI:" // Registra id RFID do administrador (para remover basta gravar uma zerada)
     #define COMANDO_VP "VP:" // Volume parcial
     #define COMANDO_TO "TO:" // Configura timeout, tempo aguardando inicio do fluxo
     
-    // Habilita modulos para compilaÃ§Ã£o
+    // Habilita modulos para compilaÃÂ§ÃÂ£o
     #define USAR_ESP32_UART_BLE
     //#define USAR_PAGINA_CONFIG
     
@@ -69,7 +69,8 @@
     #endif
 
     //
-    #define BLE_NAME "CHOPPE"
+    // Prefixo do nome BLE: CHOPP_XXXX (MAC appended at runtime)
+    #define BLE_NAME_PREFIX "CHOPP_"
 
     // Flag para identificar se os dados foram gravados na EEPROM
     #define MAGIC_FLAG_EEPROM 0xF2F2  
@@ -78,7 +79,7 @@
     #define AP_SSID     "CHOPPE"
     #define AP_PASSWORD "1234567890"
         
-    // ConfiguraÃ§Ã£o apenas para o perÃ­odo de desenvolvimetno
+    // ConfiguraÃÂ§ÃÂ£o apenas para o perÃÂ­odo de desenvolvimetno
     #ifndef WIFI_DEFAULT_SSID
         #define WIFI_DEFAULT_SSID "brisa-448561"
         //#define WIFI_DEFAULT_SSID "ridimuim"
@@ -88,7 +89,7 @@
         //#define WIFI_DEFAULT_PSW "88999448494"
     #endif    
    
-    // Estrutura da variÃ¡vel de configuraÃ§Ã£o
+    // Estrutura da variÃÂ¡vel de configuraÃÂ§ÃÂ£o
     typedef struct {
         uint16_t magicFlag;
         uint8_t modoAP;
