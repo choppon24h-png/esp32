@@ -2,7 +2,7 @@
 /* 
     *** Apenas para observar ***
     Sensor de fluxo YF-S401
-    Precision (Flow rate - pulse output) 0.3 ~ 6L / min Â± 3%
+    Precision (Flow rate - pulse output) 0.3 ~ 6L / min ÃÂ± 3%
     1L = 5880 pulsos
     6L = 35280 pulsos
     
@@ -21,7 +21,7 @@ volatile uint32_t quantidadePulso = 0;
 volatile int64_t horaPulso = 0;
 
 void executaOperacao(String cmd) {
-  // PING/PONG keep-alive — Android envia PING a cada 5s, ESP32 responde PONG
+  // PING/PONG keep-alive â Android envia PING a cada 5s, ESP32 responde PONG
   // Tratado antes do check '$' pois PING nao tem prefixo
   cmd.trim();
   if (cmd == "PING") {
@@ -33,14 +33,6 @@ void executaOperacao(String cmd) {
   }
     String rsp = "ERRO";
     
-    // Verificar autenticaÃ§Ã£o BLE antes de processar qualquer comando
-    #ifdef USAR_ESP32_UART_BLE
-        if (!isDeviceAuthenticated()) {
-            DBG_PRINTLN(F("\n[OPER] Comando rejeitado - dispositivo nÃ£o autenticado"));
-            enviaBLE("ERROR:NOT_AUTHENTICATED");
-            return;
-        }
-    #endif
     
     if (cmd[0] != '$') {
         cmd = "!!!";
@@ -74,7 +66,7 @@ void executaOperacao(String cmd) {
             DBG_PRINT( F( "\n[OPER] Erro xQueueSend"));
         }
     } else if ( op == COMANDO_RI) {        
-        DBG_PRINT( F( "\n[OPER] ConfiguraÃ§Ã£o RFID administrador: "));
+        DBG_PRINT( F( "\n[OPER] ConfiguraÃÂ§ÃÂ£o RFID administrador: "));
         DBG_PRINT(param);
         if (param.length() == 8 ){            
             param.toCharArray(configuracao.rfidMaster, param.length()+1);
@@ -86,7 +78,7 @@ void executaOperacao(String cmd) {
     } else if (op == COMANDO_TO) {
         uint32_t quantidade = (uint32_t)param.toInt();
         if (quantidade>0){
-            DBG_PRINT( F( "\n[OPER] ConfiguraÃ§Ã£o timeOut do sensor: "));
+            DBG_PRINT( F( "\n[OPER] ConfiguraÃÂ§ÃÂ£o timeOut do sensor: "));
             DBG_PRINT(param);            
             configuracao.timeOut = quantidade;
             gravaConfiguracao();
@@ -104,7 +96,7 @@ void executaOperacao(String cmd) {
 
 void IRAM_ATTR fluxoISR() {
     contadorPulso++;
-    horaPulso = esp_timer_get_time(); // [FIX #2] horaPulso atualizado a cada pulso â usado como referencia do timeout renovavel
+    horaPulso = esp_timer_get_time(); // [FIX #2] horaPulso atualizado a cada pulso Ã¢ÂÂ usado como referencia do timeout renovavel
     // [FIX] Condicao simplificada: equivalente a !(contadorPulso < quantidadePulso)
     if (quantidadePulso && (contadorPulso >= quantidadePulso)) {
         digitalWrite(PINO_RELE,!RELE_ON);
@@ -131,7 +123,7 @@ void taskLiberaML(void *pvParameters) {
                 DBG_PRINT(F("\n[OPER] liberando (Pulsos/ML): "));
                 DBG_PRINT(pulsoML);
                 
-                // Inicia variÃ¡veis para calculo da vazÃ£o
+                // Inicia variÃÂ¡veis para calculo da vazÃÂ£o
                 tempoDecorridoS = 0.0;
                 mlLiberado = 0.0;
                 //vazao = 0.0;                
@@ -218,16 +210,16 @@ void taskLiberaML(void *pvParameters) {
     }
 }
 
-// Recupera configuraÃ§Ã£o gravada na EEPROM
+// Recupera configuraÃÂ§ÃÂ£o gravada na EEPROM
 void leConfiguracao() {  
     String stemp;
-    DBG_PRINT(F("[OPER] Lendo configuraÃ§Ã£o"));
+    DBG_PRINT(F("[OPER] Lendo configuraÃÂ§ÃÂ£o"));
     EEPROM.begin(sizeof(config_t));
     EEPROM.get( 0, configuracao );  
   
-    // Inicializa com configuraÃ§Ãµes padrÃ£o,quando as configuraÃ§Ãµes nÃ£o foram gravadas pela primeira vez ou em caso de reset //
+    // Inicializa com configuraÃÂ§ÃÂµes padrÃÂ£o,quando as configuraÃÂ§ÃÂµes nÃÂ£o foram gravadas pela primeira vez ou em caso de reset //
     if ( configuracao.magicFlag != MAGIC_FLAG_EEPROM ) {    
-        DBG_PRINT(F(", carregando configuraÃ§Ã£o de fÃ¡brica"));
+        DBG_PRINT(F(", carregando configuraÃÂ§ÃÂ£o de fÃÂ¡brica"));
         memset(&configuracao,0,sizeof(config_t));
         configuracao.magicFlag = MAGIC_FLAG_EEPROM;
         configuracao.modoAP = 0; // 1 = modoap
@@ -245,9 +237,9 @@ void leConfiguracao() {
     DBG_PRINTLN();
 }
 
-// Salva configuraÃ§ao na EEPROM
+// Salva configuraÃÂ§ao na EEPROM
 void gravaConfiguracao() {
-    DBG_PRINT(F("\n[OPER] Gravando configuraÃ§Ã£o "));
+    DBG_PRINT(F("\n[OPER] Gravando configuraÃÂ§ÃÂ£o "));
     EEPROM.put( 0, configuracao );
     if (EEPROM.commit()) {
         DBG_PRINT(F("OK"));
